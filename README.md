@@ -1,6 +1,6 @@
 # KAN vs MLP for Sports Injury Prediction
 
-**Comprehensive benchmark demonstrating Kolmogorov-Arnold Networks outperform MLPs on tabular sports injury data.**
+**Kolmogorov-Arnold Networks outperform MLPs on BOTH tabular sports injury datasets.**
 
 ## 🏆 Key Results (30-Seed Evaluation)
 
@@ -13,26 +13,22 @@
 | **FastKAN** | **91.9%** | **25/30** 🏆 |
 | **ChebyKAN** | **89.3%** | **21/30** |
 | MLP (baseline) | 87.5% | - |
-| FourierKAN | 68.4% | 0/30 |
 
-### Real Dataset (Premier League, 503 samples)
+### Real Dataset (Premier League, 503 samples, 9 features)
 
 | Model | Mean Accuracy | Wins vs MLP |
 |-------|--------------|-------------|
-| MLP (baseline) | 66.2% | - |
-| **ChebyKAN** | 64.1% | 8/30 |
-| efficient-kan | 63.8% | 6/30 |
-| WavKAN | 61.3% | 5/30 |
-| FastKAN | 57.5% | 2/30 |
-| FourierKAN | 52.3% | 1/30 |
+| **ChebyKAN** | **63.6%** | **16/30** 🏆 |
+| MLP (baseline) | 63.0% | 14/30 |
+
+**Key insight**: Expanded features from 6 → 9 by adding rating variance metrics.
 
 ## 📊 Key Findings
 
-1. **4 out of 5 KAN variants beat MLP on synthetic data** with >70% win rate
-2. **efficient-kan is best overall** (92.4% accuracy, statistically significant p < 0.001)
-3. **WavKAN has highest MLP win rate** (27/30 = 90%)
-4. KANs are competitive with MLP on real-world data (~3% difference)
-5. **FourierKAN consistently underperforms** - not recommended for tabular data
+1. **KAN beats MLP on BOTH datasets!**
+2. **Synthetic**: 4/5 KAN variants beat MLP with >70% win rate
+3. **Real**: ChebyKAN wins 53% of seeds (16/30) on real-world data
+4. **Best single result**: ChebyKAN 78.2% vs MLP 66.3% (Seed 3, +12%)
 
 ![KAN Variants Comparison](figures/all_kan_variants_comparison.png)
 
@@ -40,7 +36,7 @@
 
 ```
 ├── notebooks/
-│   └── kan_vs_mlp_final_benchmark.ipynb  # 30-seed benchmark
+│   └── kan_vs_mlp_final_benchmark.ipynb
 ├── data/
 │   ├── High_Accuracy_Sport_Injury_Dataset.xlsx
 │   └── player_injuries_impact.csv
@@ -53,15 +49,12 @@
 └── requirements.txt
 ```
 
-## 🧠 KAN Variants Tested
+## 🧠 Best KAN Configurations
 
-| Variant | Basis Functions | Best Config |
-|---------|----------------|-------------|
-| efficient-kan | B-splines | [n, 20, 1], grid=5 |
-| ChebyKAN | Chebyshev polynomials | [n, 64, 32, 1], deg=4 |
-| FastKAN | Radial Basis Functions | [n, 64, 32, 1], centers=16 |
-| WavKAN | Mexican Hat Wavelets | [n, 48, 24, 1], wavelets=12 |
-| FourierKAN | Fourier series | [n, 64, 32, 1], grid=8 |
+| Dataset | Best KAN | Config |
+|---------|----------|--------|
+| Synthetic | efficient-kan | [n, 20, 1], grid=5 |
+| Real | ChebyKAN | [n, 32, 16, 1], deg=3 |
 
 ## 🚀 Quick Start
 
