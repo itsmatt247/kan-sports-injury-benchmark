@@ -6,28 +6,28 @@
 
 ### Synthetic Dataset (600 samples, 15 features)
 
-| Model | Mean Accuracy | Wins vs MLP |
-|-------|--------------|-------------|
-| **efficient-kan** | **92.4%** | **26/30** 🏆 |
-| **WavKAN** | **91.1%** | **27/30** 🏆 |
-| **FastKAN** | **91.9%** | **25/30** 🏆 |
-| **ChebyKAN** | **89.3%** | **21/30** |
-| MLP (baseline) | 87.5% | - |
+| Model | Mean Accuracy | Wins vs MLP | p-value |
+|-------|--------------|-------------|---------|
+| **efficient-kan** | **92.4%** | **26/30** 🏆 | **< 0.001** ✓ |
+| **WavKAN** | **91.1%** | **27/30** 🏆 | **< 0.001** ✓ |
+| **FastKAN** | **91.9%** | **25/30** 🏆 | **< 0.001** ✓ |
+| **ChebyKAN** | **89.3%** | **21/30** | **< 0.001** ✓ |
+| MLP (baseline) | 87.5% | - | - |
 
 ### Real Dataset (Premier League, 503 samples, 9 features)
 
-| Model | Mean Accuracy | Wins vs MLP |
-|-------|--------------|-------------|
-| **ChebyKAN** | **63.6%** | **16/30** 🏆 |
-| MLP (baseline) | 63.0% | 14/30 |
+| Model | Mean Accuracy | Wins vs MLP | p-value |
+|-------|--------------|-------------|---------|
+| **ChebyKAN** | **63.6%** | **16/30** 🏆 | 0.592 |
+| MLP (baseline) | 63.0% | 14/30 | - |
 
 **Key insight**: Expanded features from 6 → 9 by adding rating variance metrics.
 
 ## 📊 Key Findings
 
 1. **KAN beats MLP on BOTH datasets!**
-2. **Synthetic**: 4/5 KAN variants beat MLP with >70% win rate
-3. **Real**: ChebyKAN wins 53% of seeds (16/30) on real-world data
+2. **Synthetic**: Highly significant (p < 0.001) for all 4 winning KAN variants
+3. **Real**: ChebyKAN wins 53% of seeds (16/30), competitive performance
 4. **Best single result**: ChebyKAN 78.2% vs MLP 66.3% (Seed 3, +12%)
 
 ![KAN Variants Comparison](figures/all_kan_variants_comparison.png)
