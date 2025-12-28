@@ -9,8 +9,11 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ragged2e}
 
-\title{KAN We Catch Up! A Benchmark of Kolmogorov-Arnold Networks Against Gradient Boosting}
+\title{KAN We Catch Up! A Benchmark of Kolmogorov-Arnold Networks Against Gradient Boosting!!}
 
 % Authors must not appear in the submitted version.
 \author{\name Matthew Sahagun \\
@@ -28,16 +31,14 @@
 \maketitle
 
 \begin{abstract}
-Gradient Boosting Decision Trees (GBDTs), specifically XGBoost, have long been considered the state-of-the-art for tabular data, particularly in sports analytics where datasets are often noisy and heterogeneous. Recently, Kolmogorov-Arnold Networks (KANs) have emerged as a promising alternative to Multi-Layer Perceptrons (MLPs), offering learnable activation functions and potential for greater interpretability. In this work, we conduct a rigorous benchmarking of KAN variants (FastKAN, ChebyKAN, EfficientKAN, WavKAN) against XGBoost on four distinct sports injury and performance datasets. We find that on large-scale longitudinal time-series data ($N>40,000$), KAN variants achieve a test accuracy of 0.986, statistically tying with XGBoost ($p > 0.05$). Furthermore, KANs demonstrate significantly superior performance on smaller datasets. While XGBoost retains an edge in high-cardinality multimodal tasks, our results suggest that KANs are the first neural architecture to offer a competitive, interpretable alternative to Gradient Boosting for sports analytics.
+Gradient Boosting Decision Trees (GBDTs) have long been considered the state-of-the-art for tabular data, particularly in sports analytics where datasets are often noisy and heterogeneous. XGBoost, the current frontrunner of GBDT models, is speciically seen as the state-of-the-art approach to utilizing machine learning models on tabular data.  In 2024, Kolmogorov-Arnold Networks (KANs) emerged as a promising alternative to Multi-Layer Perceptrons (MLPs), offering learnable activation functions and potential for greater interpretability via the Kolmogorov Representation Thereom. Thus, we conduct a heads-up matchup: KAN v.s. MLP. We utilize four KAN varients (FastKAN, ChebyKAN, EfficientKAN, WavKAN) against XGBoost on two distinct sports injury and performance datasets. We find that on large-scale longitudinal time-series data ($N>40,000$), some KAN variants achieve a test accuracy of $0.986$. But more importantly, some KAN's have statistical significance when beating the XGBoost model, satisfying ($p < 0.05)$. We dive into the KAN's ability on high \& low cardinality tasks, seeing where and how Kolmogorov Arnold Networks can be used as the state of the art approach to aiding in rigorously identifying sports injury risk (fix this if this is not what the dataset is on).
 \end{abstract}
 
 \section{Introduction}
+Gradient Boosting Decision Trees such as XGBoost *add citation of Chen \& Gurestrin* have been known to have superior performance in tabular data. In fields where tabularized
+data is utilized, the usage of GBDTs makes obvious sense - a superlightweight model that delivers the best accuracy, thus, the best of both worlds. And thus, the common utilization of XGBoost
+was born. 
 
-The dominance of Gradient Boosting Decision Trees (GBDTs) like XGBoost \citep{chen2016xgboost} in tabular data tasks is well-documented. In fields such as sports analytics, where data often consists of messy, heterogeneous feature sets (e.g., physiological metrics, game statistics, categorical player data), GBDTs typically outperform standard deep learning models like Multi-Layer Perceptrons (MLPs) \citep{shwartz2022tabular}.
-
-However, the recent introduction of Kolmogorov-Arnold Networks (KANs) \citep{liu2024kan} has challenged the architectural assumptions of neural networks. By placing learnable activation functions on edges rather than nodes (inspired by the Kolmogorov-Arnold representation theorem), KANs promise better expressivity and, crucially, interpretability---a feature often lacking in ensemble tree methods.
-
-In this paper, we evaluate whether KANs can truly compete with XGBoost in a real-world, high-stakes domain: predicting athlete injury and performance. We benchmark five modern KAN variants across four datasets, utilizing a rigorous 30-seed evaluation protocol.
 
 \section{Methodology}
 
@@ -56,6 +57,27 @@ We benchmark the following architectures:
     \item \textbf{XGBoost}: The current industry standard.
     \item \textbf{EfficientKAN, FastKAN, ChebyKAN, WavKAN}: Recent optimizations of the original KAN architecture designed for computational efficiency.
 \end{itemize}
+
+\section{Background of Kologorov Arnold Networks}
+
+We first explore the background of Kolmogorov Arnold Networks, and what it represents. Kolmogorov Arnold Networks are based upon the Kolmogorov Representer Thereom. Although the
+full explain can be searched else where, succinctly, the thereom describes that a continuous multivariate function can be represented by the binary addition of
+univariate continuous functions. Thus, this is the motivation to how the Kolmogorov-Arnold Network structure works. Thus, we can observe that if we have some given vector \textbf{x} of dimension $n$,
+we observe that a function $f$ can be represented as $f(\textbf{x}) = \sum_{q = 1}^{2n + 1} \Phi_q(\sum_{p = 1}^{n}\phi_{q,p}(x_p))$ such that $f : [0,1]^{n} \rightarrow \mathbb{R} $, $\phi_{q,p}: [0,1] \rightarrow \mathbb{R}$, $\Phi_q : [0,1] \rightarrow \mathbb{R}$.
+However, we note that $\phi_{q,p}, \Phi_q$ must be single univariate functions.
+Thus, we also note that a Kolmogorov-Arnold
+Network doesn't operate the same as a traditional multi-layered perceptron (MLP). We observe that a KAN has the unique ability to learn the activation function, rather than
+learning weights and biases of the model. Furthermore, the weights and biases of the KAN model is fixed, completely different then a standard multilayered perceptron. Thus,
+we note that we can represent each univariate funciton as a B-spline. Since, spline$(x) = \sum_i c_iB_i(x0)$, we note that the activation function can be represented as 
+a weighted combination function of the basis function and the B-spline. Given we let $\phi(x) = w_b \cdot SiLu(x) + w_s \cdot$ spline$(x)$ (we note that $w_b,w_s$ are the weights of the basis function and the spline function respectively, and that $SiLu = \frac{x}{1 + e^{-x}})$,
+we observe that the $L$-layered Kolmogorov-Arnold Network can be represented generally as $(KAN(x) = \Phi_{L-1} \circ \Phi_{L-2} \circ \dots \circ \Phi_0)(x)$
+
+\section{Methodology}
+
+\subsection{Baseline Models}
+
+We will use the state of the art model, XGBoost, as our baseline. We observe that an XGBoost model trains each model within succession (lets double check this), allowing for gradient boosting to occur.
+T
 
 \section{Results}
 
@@ -94,8 +116,14 @@ We conducted Bonferroni-corrected paired t-tests to validate our findings. Figur
 \label{fig:pvalues}
 \end{figure}
 
-\section{Conclusion}
-Our results provide strong empirical evidence that KANs are a viable alternative to Gradient Boosting for specific classes of tabular data. Future work will focus on extracting symbolic formulas from the trained KAN layers to interpret the biomechanical "laws" learned by the models.
+\section{Conclusion and Discussion}
+Our results show that when trained on some cardinality data set, the Kolmogorov Arnold Network achieves a better accuracy with statistical significance. Furthermore, the greater importance is
+that since we have some layer that can be shown as a linear combination between B-Splines and the basis function, we are able to have interpretability with a Kolmogorov-Arnold Network
+unlike a Gradient Boosted Decision Tree Model (such as XGBoost). Thus, given that we are able to have interpreatbility of a Kolmogorov-Arnold Network, this further supports the motivation
+of substituting a KAn for a GBDT model. However, one does note that the efficiecny of the KAN does depend on the variant of the KAN. As we see with our results, only the FASTKAN has 
+an inference time which can be seen as "comprable" to the XGBoost model. Thus, we can evaluate this and interpret this to conclude that while a general KAN might not work for
+every injury dataset, we can conclude that given a specific KAN on some lower cardinality dataset, soe KAN variant has the potential to be greater than the current state of the art
+model - XGBoost. Thus, we must ask ourselves? Although we can be more efficient with ensemble learning, is this more important and valuable than truly interpreting the injury dataset?
 
 \bibliography{main}
 \bibliographystyle{tmlr}
